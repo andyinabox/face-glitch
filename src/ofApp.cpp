@@ -45,7 +45,8 @@ void ofApp::update(){
     mainFbo.begin();
         ofClear(0);
         pixelate.begin();
-            pixelate.setUniformTexture("mask", maskFbo.getTexture(), 1);
+            pixelate.setUniformTexture("src", img.getTexture(), 1);
+            pixelate.setUniformTexture("mask", maskFbo.getTexture(), 2);
     
             pixelate.setUniform1f("width", ofGetWidth());
             pixelate.setUniform1f("height", ofGetHeight());

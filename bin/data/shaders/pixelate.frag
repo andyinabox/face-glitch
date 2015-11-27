@@ -3,7 +3,7 @@
 // in many examples: `sampler2D` uses normalized texture
 // coordinates between 0.0 and 0.1; while `sampler2DRect`
 // uses regular pixel coordinates
-uniform sampler2DRect tex0;
+uniform sampler2DRect src;
 uniform sampler2DRect mask;
 
 uniform float width;
@@ -31,16 +31,20 @@ void main()
     
     // get the updated texture coordinates.
     vec2 coord = vec2(
-        (floor(uv.x/dx) * dx) + dx/2.,
-        (floor(uv.y/dy) * dy) + dy/2.
+        (floor(uv.x/dx) * dx) + dx/2.0,
+        (floor(uv.y/dy) * dy) + dy/2.0
     );
     
     // get color based on new coordinate
-    vec4 maskColor = texture2DRect(mask, uv);
-    vec4 color = texture2DRect(tex0, coord);
+    vec4 srcColor = texture2DRect(src, uv);
+    vec4 pixColor = texture2DRect(src, coord);
+    vec4 maskColor = texture2DRect(mask, coord);
+
+    // set our color and alpha components
+    vec3 color = mix(srcColor, pixColor, blend).rgb;
+    float alpha = maskColor.a;
 
     // set frag color and use `blend` for alpha
-	gl_FragColor = vec4(color.rgb, maskColor.a*blend);
-//	gl_FragColor = vec4(color.rgb, blend);
+	gl_FragColor = vec4(color, alpha);
 
 }
