@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -24,5 +25,8 @@ class ofApp : public ofBaseApp{
         ofImage img;
         ofShader pixelate;
         ofFbo fbo;
+    
+        ofxPanel gui;
+        ofxFloatSlider blend;
 		
 };

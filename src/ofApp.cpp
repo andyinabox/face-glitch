@@ -7,14 +7,17 @@ void ofApp::setup(){
     fbo.allocate(img.getWidth(), img.getHeight());
     
     ofSetWindowShape(img.getWidth(), img.getHeight());
+    
+    gui.setup();
+	gui.add(blend.setup("Blend", 1.0, 0.0, 1.0));
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     fbo.begin();
         pixelate.begin();
-            float blendValue = ofMap(mouseX, 0, ofGetWidth(), 0.0, 1.0, true);
-            pixelate.setUniform1f("blend", blendValue);
+            pixelate.setUniform1f("blend", blend);
             img.draw(0,0);
         pixelate.end();
     fbo.end();
@@ -24,6 +27,7 @@ void ofApp::update(){
 void ofApp::draw(){
     ofBackground(255, 0, 0);
     fbo.draw(0,0);
+    gui.draw();
 }
 
 //--------------------------------------------------------------
