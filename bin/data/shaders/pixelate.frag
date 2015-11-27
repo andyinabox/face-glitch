@@ -4,6 +4,7 @@
 // coordinates between 0.0 and 0.1; while `sampler2DRect`
 // uses regular pixel coordinates
 uniform sampler2DRect tex0;
+uniform sampler2DRect mask;
 
 uniform float width;
 uniform float height;
@@ -35,9 +36,11 @@ void main()
     );
     
     // get color based on new coordinate
+    vec4 maskColor = texture2DRect(mask, uv);
     vec4 color = texture2DRect(tex0, coord);
 
     // set frag color and use `blend` for alpha
-	gl_FragColor = vec4(color.rgb, blend);
+	gl_FragColor = vec4(color.rgb, maskColor.a*blend);
+//	gl_FragColor = vec4(color.rgb, blend);
 
 }

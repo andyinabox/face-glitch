@@ -25,7 +25,10 @@ class ofApp : public ofBaseApp{
     
         ofImage img;
         ofShader pixelate;
-        ofFbo fbo;
+        ofFbo mainFbo;
+    
+        ofRectangle simpleMask;
+        ofFbo maskFbo;
     
         ofxPanel gui;
 		ofxFloatSlider pixelWidth;
