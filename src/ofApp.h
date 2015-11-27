@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -27,6 +28,8 @@ class ofApp : public ofBaseApp{
         ofFbo fbo;
     
         ofxPanel gui;
+		ofxFloatSlider pixelWidth;
+        ofxFloatSlider pixelHeight;
         ofxFloatSlider blend;
-		
+   
 };

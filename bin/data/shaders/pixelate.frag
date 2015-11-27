@@ -1,13 +1,43 @@
+// important to note the difference between
+// `sampler2DRect` here and `sampler2D` that you see
+// in many examples: `sampler2D` uses normalized texture
+// coordinates between 0.0 and 0.1; while `sampler2DRect`
+// uses regular pixel coordinates
 uniform sampler2DRect tex0;
+
+uniform float width;
+uniform float height;
+uniform float pixel_w;
+uniform float pixel_h;
 
 uniform float blend;
 
+
 void main()
 {
-    vec4 color = texture2DRect(tex0, gl_TexCoord[0].xy);
-    
-    vec3 inverted = vec3(1.0) - color.rgb;
+    // get texture coordinates
+    vec2 uv = gl_TexCoord[0].xy;
 
-//	gl_FragColor = vec4(inverted, color.a);
-	gl_FragColor = vec4(inverted, blend);
+    // this is what you would use to find `dx`/`dy` for
+    // normalized texture coordinates
+    // float dx = pixel_w * (1./width);
+    // float dy = pixel_h * (1./height);
+    
+    // since our texture coordinates are not normalized
+    // and simply in pixel values, this part is pretty easy
+    float dx = pixel_w;
+    float dy = pixel_h;
+    
+    // get the updated texture coordinates.
+    vec2 coord = vec2(
+        (floor(uv.x/dx) * dx) + dx/2.,
+        (floor(uv.y/dy) * dy) + dy/2.
+    );
+    
+    // get color based on new coordinate
+    vec4 color = texture2DRect(tex0, coord);
+
+    // set frag color and use `blend` for alpha
+	gl_FragColor = vec4(color.rgb, blend);
+
 }
