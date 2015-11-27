@@ -10,6 +10,10 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+    
+        void updatePaintFbo(int x, int y);
+        void clearPaintFbo();
+        void clearMaskFbo();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -23,12 +27,16 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+        int useEraser;
+    
         ofImage img;
         ofShader pixelate;
+        ofShader mask;
         ofFbo mainFbo;
-    
-        ofRectangle simpleMask;
         ofFbo maskFbo;
+        ofFbo paintFbo;
+        ofTexture maskTexture;
+    
     
         ofxPanel gui;
 		ofxFloatSlider pixelWidth;
