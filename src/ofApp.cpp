@@ -106,7 +106,7 @@ void ofApp::draw(){
     
     if(bShowHud) {
         string hud = "Press 'c' to clear \nPress 'm' to show mask\nPress 'h' to show/hide this\n";
-        ofDrawBitmapString(hud, ofGetWidth()-300, 15);
+        ofDrawBitmapString(hud, ofGetWidth()-300, 25);
     }
 }
 
