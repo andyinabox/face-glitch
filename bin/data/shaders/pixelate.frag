@@ -8,8 +8,13 @@ uniform sampler2DRect mask;
 
 uniform float width;
 uniform float height;
+uniform float t;
+
 uniform float pixel_w;
 uniform float pixel_h;
+
+uniform int animation;
+uniform float animSpeed;
 
 uniform float blend;
 
@@ -28,11 +33,22 @@ void main()
     // and simply in pixel values, this part is pretty easy
     float dx = pixel_w;
     float dy = pixel_h;
+
+
+    float x_pos = dx/2.;
+    float y_pos = dy/2.;
+    
+//    float th = mod(t, 1000.);
+    if(animation == 1) {
+        x_pos = sin(t/animSpeed)*dx/2. + x_pos;
+        y_pos = cos(t/animSpeed)*dy/2. + y_pos;
+    }
+
     
     // get the updated texture coordinates.
     vec2 coord = vec2(
-        (floor(uv.x/dx) * dx) + dx/2.0,
-        (floor(uv.y/dy) * dy) + dy/2.0
+        (floor(uv.x/dx) * dx) + x_pos,
+        (floor(uv.y/dy) * dy) + y_pos
     );
     
     // get color based on new coordinate

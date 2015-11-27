@@ -6,6 +6,8 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_VERBOSE);
     ofEnableSmoothing();
 
+    bShowHud = true;
+
     // load image
     img.load("emir_of_bukhara.jpg");
     
@@ -20,7 +22,6 @@ void ofApp::setup(){
     mainFbo.allocate(fboSettings);
     maskFbo.allocate(fboSettings);
     paintFbo.allocate(fboSettings);
-//    maskTexture = maskFbo.getTexture();
     
     // clear out the fbos
     clearPaintFbo();
@@ -35,7 +36,10 @@ void ofApp::setup(){
 	gui.add(pixelHeight.setup("Pixel Height", 15.0, 0.0, 50.0));
 	gui.add(brushRadius.setup("BrushRadius", 25.0, 1.0, 100.0));
 	gui.add(blend.setup("Blend", 1.0, 0.0, 1.0));
-	gui.add(clearLabel.setup("Press 'c' to clear", ""));    
+    
+    gui.add(animationLabel.setup("Animation", ""));
+    gui.add(enableAnimation.setup("Enable animation", false));
+    gui.add(animSpeed.setup("Animation speed", 1000.0, 1.0, 10000.0));
 
 }
 
@@ -43,13 +47,6 @@ void ofApp::setup(){
 void ofApp::update(){
 
     maskFbo.begin();
-//        ofClear(0);
-//        mask.begin();
-//            mask.setUniformTexture("paint", paintFbo.getTexture(), 1);
-//            mask.setUniformTexture("mask", maskTexture, 2);
-//            mask.setUniform1i("eraser", useEraser);
-//            img.draw(0,0);
-//        mask.end();
         paintFbo.draw(0,0);
     maskFbo.end();
 
@@ -61,8 +58,13 @@ void ofApp::update(){
     
             pixelate.setUniform1f("width", ofGetWidth());
             pixelate.setUniform1f("height", ofGetHeight());
+            pixelate.setUniform1f("t", ofGetElapsedTimeMillis());
+
             pixelate.setUniform1f("pixel_w", pixelWidth);
             pixelate.setUniform1f("pixel_h", pixelHeight);
+    
+            pixelate.setUniform1i("animation", enableAnimation ? 1 : 0);
+            pixelate.setUniform1f("animSpeed", animSpeed);
 
             pixelate.setUniform1f("blend", blend);
 
@@ -75,14 +77,19 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofClear(0);
-    ofBackground(255, 0, 0);
+
+    // draw image
     img.draw(0,0);
+    
+    // draw fbo over image
     mainFbo.draw(0,0);
     
+    // draw mask if requested
     if(bDrawMask) {
         maskFbo.draw(0,0);
     }
-    // brush effects
+    
+    // draw brush
     ofPushStyle();
         ofEnableAlphaBlending();
         ofSetColor(255, 255, 244, 100);
@@ -94,7 +101,13 @@ void ofApp::draw(){
         ofDrawEllipse(mouseX, mouseY, brushRadius, brushRadius);
     ofPopStyle();
     
+    // draw gui
     gui.draw();
+    
+    if(bShowHud) {
+        string hud = "Press 'c' to clear \nPress 'm' to show mask\nPress 'h' to show/hide this\n";
+        ofDrawBitmapString(hud, ofGetWidth()-300, 15);
+    }
 }
 
 
@@ -117,16 +130,13 @@ void ofApp::clearMaskFbo() {
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-//    if(key == OF_KEY_ALT) {
-//        ofLogVerbose("Use eraser!");
-//        useEraser = 1;
-//    }
-
     if(key == 'c') {
         ofLogVerbose("Clear mask");
         clearMaskFbo();
     } else if (key == 'm') {
         bDrawMask = true;
+    } else if (key == 'h') {
+        bShowHud = !bShowHud;
     }
 }
 

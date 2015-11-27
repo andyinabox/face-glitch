@@ -27,8 +27,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-        int useEraser;
+        bool bShowHud;
         bool bDrawMask;
+    
     
         ofImage img;
     
@@ -37,7 +38,6 @@ class ofApp : public ofBaseApp{
         ofFbo mainFbo;
         ofFbo maskFbo;
         ofFbo paintFbo;
-//        ofTexture maskTexture;
     
     
         ofxPanel gui;
@@ -45,6 +45,9 @@ class ofApp : public ofBaseApp{
         ofxFloatSlider pixelHeight;
         ofxFloatSlider blend;
         ofxFloatSlider brushRadius;
-        ofxLabel clearLabel;
-   
+    
+        ofxLabel animationLabel;
+        ofxToggle enableAnimation;
+        ofxFloatSlider animSpeed;
+    
 };
