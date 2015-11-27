@@ -28,6 +28,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
         int useEraser;
+        bool bDrawMask;
     
         ofImage img;
     
@@ -36,7 +37,7 @@ class ofApp : public ofBaseApp{
         ofFbo mainFbo;
         ofFbo maskFbo;
         ofFbo paintFbo;
-        ofTexture maskTexture;
+//        ofTexture maskTexture;
     
     
         ofxPanel gui;

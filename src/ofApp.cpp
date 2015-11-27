@@ -7,7 +7,7 @@ void ofApp::setup(){
     ofEnableSmoothing();
 
     // load image
-    img.load("hadley.jpg");
+    img.load("emir_of_bukhara.jpg");
     
     // load shaders
     pixelate.load("shaders/pixelate");
@@ -20,7 +20,7 @@ void ofApp::setup(){
     mainFbo.allocate(fboSettings);
     maskFbo.allocate(fboSettings);
     paintFbo.allocate(fboSettings);
-    maskTexture = maskFbo.getTexture();
+//    maskTexture = maskFbo.getTexture();
     
     // clear out the fbos
     clearPaintFbo();
@@ -78,8 +78,10 @@ void ofApp::draw(){
     ofBackground(255, 0, 0);
     img.draw(0,0);
     mainFbo.draw(0,0);
-//    maskFbo.draw(0,0);
-
+    
+    if(bDrawMask) {
+        maskFbo.draw(0,0);
+    }
     // brush effects
     ofPushStyle();
         ofEnableAlphaBlending();
@@ -123,11 +125,14 @@ void ofApp::keyPressed(int key){
     if(key == 'c') {
         ofLogVerbose("Clear mask");
         clearMaskFbo();
+    } else if (key == 'm') {
+        bDrawMask = true;
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+    bDrawMask = false;
 //    useEraser = 0;
 }
 
