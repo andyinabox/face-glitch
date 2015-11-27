@@ -30,6 +30,7 @@ class ofApp : public ofBaseApp{
         int useEraser;
     
         ofImage img;
+    
         ofShader pixelate;
         ofShader mask;
         ofFbo mainFbo;
@@ -42,5 +43,7 @@ class ofApp : public ofBaseApp{
 		ofxFloatSlider pixelWidth;
         ofxFloatSlider pixelHeight;
         ofxFloatSlider blend;
+        ofxFloatSlider brushRadius;
+        ofxLabel clearLabel;
    
 };

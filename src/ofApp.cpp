@@ -4,6 +4,7 @@
 void ofApp::setup(){
 
     ofSetLogLevel(OF_LOG_VERBOSE);
+    ofEnableSmoothing();
 
     // load image
     img.load("hadley.jpg");
@@ -32,7 +33,9 @@ void ofApp::setup(){
     gui.setup();
 	gui.add(pixelWidth.setup("Pixel Width", 15.0, 0.0, 50.0));
 	gui.add(pixelHeight.setup("Pixel Height", 15.0, 0.0, 50.0));
+	gui.add(brushRadius.setup("BrushRadius", 25.0, 1.0, 100.0));
 	gui.add(blend.setup("Blend", 1.0, 0.0, 1.0));
+	gui.add(clearLabel.setup("Press 'c' to clear", ""));    
 
 }
 
@@ -76,11 +79,19 @@ void ofApp::draw(){
     img.draw(0,0);
     mainFbo.draw(0,0);
 //    maskFbo.draw(0,0);
+
+    // brush effects
     ofPushStyle();
         ofEnableAlphaBlending();
         ofSetColor(255, 255, 244, 100);
+        // draw paint fbo
         paintFbo.draw(0,0);
+    
+        // draw brush outline
+        ofNoFill();
+        ofDrawEllipse(mouseX, mouseY, brushRadius, brushRadius);
     ofPopStyle();
+    
     gui.draw();
 }
 
@@ -88,7 +99,7 @@ void ofApp::draw(){
 void ofApp::updatePaintFbo(int x, int y) {
     paintFbo.begin();
         ofClear(0);
-        ofDrawEllipse(x, y, 50, 50);
+        ofDrawEllipse(x, y, brushRadius, brushRadius);
     paintFbo.end();
 }
 
@@ -110,6 +121,7 @@ void ofApp::keyPressed(int key){
 //    }
 
     if(key == 'c') {
+        ofLogVerbose("Clear mask");
         clearMaskFbo();
     }
 }
