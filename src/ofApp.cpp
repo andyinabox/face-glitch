@@ -136,8 +136,8 @@ void ofApp::draw(){
     
     // draw the HUD if enabled
     if(bShowHud) {
-        string hud = "Press 'c' to clear \n"
-        hud = hud + "Press 'm' to show mask\n"
+        string hud = "Press 'c' to clear \n";
+        hud = hud + "Press 'm' to show mask\n";
         hud = hud + "Press 'h' to show/hide this\n";
         ofDrawBitmapString(hud, ofGetWidth()-300, 25);
     }
